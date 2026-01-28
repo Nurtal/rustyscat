@@ -1,36 +1,28 @@
-use std::cmp::Ordering;
-use std::io;
-use rand::Rng;
+use hound::WavReader;
+use std::error::Error;
 
-fn main() {
+fn main() -> Result<(), Box<dyn Error>> {
 
-    let secret_number = rand::thread_rng().gen_range(1..=100);
+    
+    // Chemin vers ton fichier wav
+    let path = "/home/n765/workspace/miami_wire/1_Whisper_on_Biscayne/data/miami_scenario1_whisper.wav";
 
+    // Ouvre le fichier et lit l’en-tête
+    let mut reader = WavReader::open(path)?;
+    println!("Sample rate : {}", reader.spec().sample_rate);
+    println!("Canaux      : {}", reader.spec().channels);
+    println!("Bits/sample : {}", reader.spec().bits_per_sample);
 
-    loop {
+    // Charge tous les échantillons dans un vecteur de i16 (pour un WAV PCM 16 bits)
+    let samples: Result<Vec<i16>, _> = reader.samples::<i16>().collect();
+    let samples = samples?;
 
+    println!("Nombre d'échantillons : {}", samples.len());
 
-        let mut guess = String::new();
-        println!("Please input your guess.");
-
-        io::stdin()
-            .read_line(&mut guess)
-            .expect("Failed to read line");
-
-        let guess: u32 = guess.trim().parse().expect("Please type a number!");
-
-        println!("You guessed: {guess}");
-
-        match guess.cmp(&secret_number) {
-            Ordering::Less => println!("Too small!"),
-            Ordering::Greater => println!("Too big!"),
-            Ordering::Equal => {
-                println!("You win!");
-                break;
-            }
-        }
-        
-        
+    // Exemple : utilise le premier échantillon
+    if let Some(first) = samples.first() {
+        println!("Premier échantillon : {}", first);
     }
 
+    Ok(())
 }
