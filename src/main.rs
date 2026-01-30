@@ -1,6 +1,4 @@
-
 mod audio;
-
 use audio::{ensure_data_dir, download_audio};
 
 #[tokio::main]
@@ -8,7 +6,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     ensure_data_dir()?;
     
     let url = "https://download.samplelib.com/mp3/sample-3s.mp3";
+    let path = "/home/drfox/workspace/rustyscat/data/audio/sample-3s.mp3";
     download_audio(url).await?;
+
+    // extract samples
+    //let _samples = audio::inspect_mp3(path)?;
+
     /*
     
     // Chemin vers ton fichier wav

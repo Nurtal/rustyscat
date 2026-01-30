@@ -6,8 +6,6 @@ pub mod audio {
     pub use super::download_audio;
 }
 
-
-
 /// Crée le dossier `data/` à la racine du projet s'il n'existe pas déjà.
 ///
 /// # Exemples
@@ -50,6 +48,7 @@ pub fn ensure_data_dir() -> Result<PathBuf, std::io::Error> {
 /// - Échec du téléchargement (404, réseau...)
 /// - Problème d'écriture (permissions, disque plein)
 pub async fn download_audio(url: &str) -> Result<PathBuf, Box<dyn std::error::Error>> {
+    
     // Créer data/audio/
     let mut base_dir = ensure_data_dir()?;
     base_dir.push("audio");
@@ -77,12 +76,6 @@ pub async fn download_audio(url: &str) -> Result<PathBuf, Box<dyn std::error::Er
     println!("✅ Téléchargé : {:?}", file_path);
     Ok(file_path)
 }
-
-
-
-
-
-
 
 
 
