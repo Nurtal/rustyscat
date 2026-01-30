@@ -1,8 +1,15 @@
-use hound::WavReader;
-use std::error::Error;
 
-fn main() -> Result<(), Box<dyn Error>> {
+mod audio;
 
+use audio::{ensure_data_dir, download_audio};
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    ensure_data_dir()?;
+    
+    let url = "https://download.samplelib.com/mp3/sample-3s.mp3";
+    download_audio(url).await?;
+    /*
     
     // Chemin vers ton fichier wav
     let path = "/home/n765/workspace/miami_wire/1_Whisper_on_Biscayne/data/miami_scenario1_whisper.wav";
@@ -24,5 +31,8 @@ fn main() -> Result<(), Box<dyn Error>> {
         println!("Premier échantillon : {}", first);
     }
 
+    */
+    
     Ok(())
 }
+
