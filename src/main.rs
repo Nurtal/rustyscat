@@ -9,7 +9,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let path = "/home/drfox/workspace/rustyscat/data/audio/sample-3s.mp3";
     download_audio(url).await?;
 
-    // extract samples
+    // load data
+    audio::load_mp3(path)?;
     //let _samples = audio::inspect_mp3(path)?;
 
     /*

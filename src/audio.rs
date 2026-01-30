@@ -1,10 +1,15 @@
 use std::{fs, io::Cursor, path::{Path, PathBuf}};
 use url::Url;
+use rodio::{Decoder, OutputStream, Sink, Source};
+use std::fs::File;
+use std::io::BufReader;
 
 pub mod audio {
     pub use super::ensure_data_dir;
     pub use super::download_audio;
 }
+
+
 
 /// Crée le dossier `data/` à la racine du projet s'il n'existe pas déjà.
 ///
@@ -78,7 +83,27 @@ pub async fn download_audio(url: &str) -> Result<PathBuf, Box<dyn std::error::Er
 }
 
 
+/// Charge un fichier MP3 et affiche ses infos de base
+///
+/// Retourne un Sink pour jouer le son (optionnel)
+pub fn load_mp3(path: &str) -> Result<(), Box<dyn std::error::Error>> {
+    // Ouvre le fichier
+    let file = File::open(path)?;
+    let source = Decoder::new(BufReader::new(file))?;
 
+    // Infos du fichier
+    println!("Sample rate : {}", source.sample_rate());
+    println!("Canaux      : {}", source.channels());
 
+    // Joue le son (optionnel)
+    let (_stream, stream_handle) = OutputStream::try_default()?;
+    let sink = Sink::try_new(&stream_handle)?;
+    sink.append(source);
+    
+    println!("✅ MP3 chargé et prêt à jouer ! Appuie Ctrl+C pour arrêter.");
+    sink.sleep_until_end();
+
+    Ok(())
+}
 
 
