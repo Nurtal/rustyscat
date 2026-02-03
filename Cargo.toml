@@ -10,3 +10,5 @@ tokio = { version = "1", features = ["full"] }
 reqwest = { version = "0.12", features = ["default"] }
 url = "2.5"
 rodio = "0.17"
+audio-visualizer = "0.5.0"
+symphonia = { version = "0.5.4", default-features = false, features = ["mp3"] }

@@ -1,5 +1,5 @@
 mod audio;
-use audio::{ensure_data_dir, download_audio};
+use audio::{ensure_data_dir, download_audio, generate_spectrogram};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -11,6 +11,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // load data
     audio::load_mp3(path)?;
+
+    // generate spectrogram
+    generate_spectrogram(path)?;
+    
     //let _samples = audio::inspect_mp3(path)?;
 
     /*
